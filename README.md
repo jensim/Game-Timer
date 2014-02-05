@@ -10,7 +10,9 @@ Indata:
 -------
 * Speltid: den tiden som hela matchen ska ta som mest
 * Presentations tid: Den tid som båda spelarna ska ha på sig att presentera sin arméer för varandra om man spelar med öppna listor.
+OPTIONAL - Man kan spela med dolda listor, hoppa då direkt till deployment!
 * Deployment tid: den tid man ska få på sig att sätta ut sin armé på spelbordet.
+Spelas simultant. Spelare 1 ställer ut en enhet, därefter spelare 2 en enhet
 
 Utdata:
 -------
