@@ -41,14 +41,14 @@ UI
 --------
 * En ruta med två flikar. En för inställningar och en för klockan*
 * Inställningar
-** Presentations tid: Dropdown för minuter (om 0 hoppar man över den fasen)
-** Deployment: Dropdown för minuter
-** Total tid: Dropdown för timmar och minuter.
+* Presentations tid: Dropdown för minuter (om 0 hoppar man över den fasen)
+* Deployment: Dropdown för minuter
+* Total tid: Dropdown för timmar och minuter.
 * Klocka
-** Total tid kvar: Label
-** Tur: Label
-** Spelare: Label
-** Tid kvar tipp nästa spelare: Label
+* Total tid kvar: Label
+* Tur: Label
+* Spelare: Label
+* Tid kvar tipp nästa spelare: Label
 
 Fluff
 -------
