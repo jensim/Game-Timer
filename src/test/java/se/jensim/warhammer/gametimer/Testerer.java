@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class Testerer {
@@ -26,6 +27,7 @@ public class Testerer {
 	public void tearDown() throws Exception {
 	}
 
+	@Ignore
 	@Test
 	public void test() {
 		fail("Not yet implemented");

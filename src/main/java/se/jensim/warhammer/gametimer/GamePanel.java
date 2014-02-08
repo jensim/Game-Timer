@@ -5,30 +5,23 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class GamePanel extends JPanel implements ActionListener {
+public class GamePanel extends ContainerPanel implements ActionListener {
 	private static final long serialVersionUID = 6099065145535084085L;
-
-	private static final int TIME_M = 60 * 1000;
-	private static final int TIME_H = 60 * TIME_M;
 
 	private final int
 			DELAY = 100,
 			TIME_START;
 
-	private int
-			timeRemain,
-			timeRemainTotal;
-
-	private Timer timer = new Timer(DELAY, this);
+	private final Timer timer = new Timer(DELAY, this);
 
 	private final JLabel lblTime = new JLabel("time"),
 			lblTimeTotal = new JLabel("total"),
 			lblCaption;
 
 	public GamePanel(final String CAPTION, final int TIME) {
+		super(CAPTION);
 		lblCaption = new JLabel(CAPTION);
 		TIME_START = TIME;
 		timeRemain = TIME_START;
@@ -44,22 +37,8 @@ public class GamePanel extends JPanel implements ActionListener {
 		timeRemain -= DELAY;
 		timeRemainTotal -= DELAY;
 
-		int tmp_remain = timeRemain;
-		int timeH = timeRemain / TIME_H;
-		tmp_remain -= timeH * TIME_H;
-		int timeM = tmp_remain / TIME_M;
-		tmp_remain -= timeM * TIME_M;
-		int timeS = tmp_remain / 1000;
-
-		int tmp_tot = timeRemainTotal;
-		int totH = timeRemainTotal / TIME_H;
-		tmp_tot -= totH * TIME_H;
-		int totM = tmp_tot / TIME_M;
-		tmp_tot -= totM * TIME_M;
-		int totS = tmp_tot / 1000;
-
-		lblTime.setText(String.format("Remaining: %02d:%02d:%02d", timeH, timeM, timeS));
-		lblTimeTotal.setText(String.format("Total remaining: %02d:%02d:%02d", totH, totM, totS));
+		lblTime.setText("Remaining: " + HelperTool.millsToTimeString(timeRemain));
+		lblTimeTotal.setText("Total remaining: " + HelperTool.millsToTimeString(timeRemainTotal));
 	}
 
 	public final void start() {
@@ -80,13 +59,5 @@ public class GamePanel extends JPanel implements ActionListener {
 		} else {
 			timer.start();
 		}
-	}
-
-	public final void setTotal(final int total) {
-		this.timeRemainTotal = total;
-	}
-
-	public final int getTotal() {
-		return timeRemainTotal;
 	}
 }
