@@ -102,7 +102,8 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	private void setupPage(final int from) {
 
-		System.out.println(String.format("#setupPage() page:%d from:%d", page, from));
+		//DEBUG
+		//System.out.println(String.format("#setupPage() page:%d from:%d", page, from));
 
 		if (page == -1) { // Settings page (FIRST)
 			mainPanel.removeAll();
@@ -118,7 +119,7 @@ public class MainWindow extends JFrame implements ActionListener {
 			if (page == 0 && from == -1) {
 				// DO NOTHING
 			} else {
-				int timeRemainingTotal = panelList.get(from).getTotal();
+				long timeRemainingTotal = panelList.get(from).getTotal();
 				panelList.get(page).setTotal(timeRemainingTotal);
 			}
 

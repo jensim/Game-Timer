@@ -10,9 +10,10 @@ public abstract class ContainerPanel extends JPanel {
 	protected static final int TIME_M = 60 * 1000,
 			TIME_H = 60 * TIME_M;
 
-	protected int
+	protected long
 			timeRemain,
-			timeRemainTotal;
+			timeRemainTotal,
+			timeLastmeasure = System.currentTimeMillis();
 	
 	public ContainerPanel(String cap) {
 		caption = cap;
@@ -22,11 +23,11 @@ public abstract class ContainerPanel extends JPanel {
 		return this.caption;
 	}
 
-	public void setTotal(final int total) {
+	public void setTotal(final long total) {
 		this.timeRemainTotal = total;
 	}
 
-	public int getTotal() {
+	public long getTotal() {
 		return timeRemainTotal;
 	}
 	

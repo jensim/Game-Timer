@@ -27,10 +27,41 @@ public class Testerer {
 	public void tearDown() throws Exception {
 	}
 
-	@Ignore
 	@Test
 	public void test() {
-		fail("Not yet implemented");
+		int testTime = 3000;
+		GamePanel gp = new GamePanel("", 2 * testTime);
+		
+		gp.start();
+		try {
+			Thread.sleep(testTime);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			fail("Thread exception");
+		}
+		gp.stop();
+		
+		try {
+			Thread.sleep(testTime);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			fail("Thread exception");
+		}
+		
+		gp.start();
+		try {
+			Thread.sleep(testTime);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			fail("Thread exception");
+		}
+		gp.stop();
+
+		System.out.println(String.format("Remaining: %d, chould be as little as possible..",
+				gp.timeRemain));
+		assertTrue(gp.timeRemain <= 100);
+		assertTrue(gp.timeRemain >= -10);
 	}
 
+	
 }

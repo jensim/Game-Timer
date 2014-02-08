@@ -10,9 +10,8 @@ import javax.swing.Timer;
 public class GamePanel extends ContainerPanel implements ActionListener {
 	private static final long serialVersionUID = 6099065145535084085L;
 
-	private final int
-			DELAY = 100,
-			TIME_START;
+	private final int DELAY = 100;
+	private final long TIME_START;
 
 	private final Timer timer = new Timer(DELAY, this);
 
@@ -20,12 +19,15 @@ public class GamePanel extends ContainerPanel implements ActionListener {
 			lblTimeTotal = new JLabel("total"),
 			lblCaption;
 
-	public GamePanel(final String CAPTION, final int TIME) {
+	public GamePanel(final String CAPTION, final long TIME) {
 		super(CAPTION);
 		lblCaption = new JLabel(CAPTION);
 		TIME_START = TIME;
-		timeRemain = TIME_START;
+		timeRemain = TIME;
 
+		//TODO: DEBUG PRINT
+		//System.out.println(String.format("GamePanel '%s' long parameter:%d, timeRemain:%d", CAPTION, TIME, timeRemain));
+		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		add(lblCaption);
@@ -34,30 +36,38 @@ public class GamePanel extends ContainerPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		timeRemain -= DELAY;
-		timeRemainTotal -= DELAY;
+		long timeTmpRemain = (timeRemain - System.currentTimeMillis() + timeLastmeasure);
 
-		lblTime.setText("Remaining: " + HelperTool.millsToTimeString(timeRemain));
-		lblTimeTotal.setText("Total remaining: " + HelperTool.millsToTimeString(timeRemainTotal));
+		lblTime.setText("Remaining: " + HelperTool.millsToTimeString(timeTmpRemain));
+		lblTimeTotal.setText("Total remaining: " + HelperTool.millsToTimeString(timeTmpRemain));
 	}
 
 	public final void start() {
 		if (!timer.isRunning()) {
 			timer.start();
 		}
+		timeLastmeasure = System.currentTimeMillis();
 	}
 
 	public final void stop() {
 		if (timer.isRunning()) {
 			timer.stop();
 		}
+		recordTimeSpan();
 	}
 
 	public final void toggleRunning() {
 		if (timer.isRunning()) {
-			timer.stop();
+			stop();
 		} else {
-			timer.start();
+			start();
 		}
+		
+	}
+
+	private final void recordTimeSpan() {
+		long timeSpan = System.currentTimeMillis() - timeLastmeasure;
+		timeRemain -= timeSpan;
+		timeLastmeasure = System.currentTimeMillis();
 	}
 }
