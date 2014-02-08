@@ -3,8 +3,9 @@ package se.jensim.warhammer.gametimer;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 import javax.swing.BoxLayout;
@@ -12,7 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class MainWindow extends JFrame implements ActionListener {
+public class MainWindow extends JFrame implements ActionListener, WindowListener {
 	private static final long serialVersionUID = -5821143729479243771L;
 
 	private static final int DEFAULT_ROUNDS = 6, DEFAULT_PLAYERS = 2;
@@ -57,6 +58,8 @@ public class MainWindow extends JFrame implements ActionListener {
 		add(buttonPanel, BorderLayout.SOUTH);
 
 		stop();
+		
+		addWindowListener(this);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -152,8 +155,6 @@ public class MainWindow extends JFrame implements ActionListener {
 			stop();
 		}
 
-		boolean isGame = page < panelList.size() && page >= 0;
-
 		btnStart.setVisible(page == -1);
 		btnBack.setVisible(page > 0 && page < panelList.size());
 		btnNext.setVisible(page >= 0 && page < panelList.size() - 1);
@@ -172,5 +173,29 @@ public class MainWindow extends JFrame implements ActionListener {
 		page = -1;
 		setupPage(-1);
 		settingsPanel.repaint();
+	}
+
+	public void windowOpened(WindowEvent e) {
+	}
+
+	public void windowClosing(WindowEvent e) {
+		System.out.println("Window closing");
+		System.exit(0);
+	}
+
+	public void windowClosed(WindowEvent e) {
+		System.out.println("Window closed");
+	}
+
+	public void windowIconified(WindowEvent e) {
+	}
+
+	public void windowDeiconified(WindowEvent e) {
+	}
+
+	public void windowActivated(WindowEvent e) {
+	}
+
+	public void windowDeactivated(WindowEvent e) {
 	}
 }

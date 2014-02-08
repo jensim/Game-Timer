@@ -11,8 +11,6 @@ public class GamePanel extends ContainerPanel implements ActionListener {
 	private static final long serialVersionUID = 6099065145535084085L;
 
 	private final int DELAY = 100;
-	private final long TIME_START;
-
 	private final Timer timer = new Timer(DELAY, this);
 
 	private final JLabel lblTime = new JLabel("time"),
@@ -22,7 +20,6 @@ public class GamePanel extends ContainerPanel implements ActionListener {
 	public GamePanel(final String CAPTION, final long TIME) {
 		super(CAPTION);
 		lblCaption = new JLabel(CAPTION);
-		TIME_START = TIME;
 		timeRemain = TIME;
 
 		//TODO: DEBUG PRINT

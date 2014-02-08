@@ -52,7 +52,7 @@
 							<mainClass>se.jensim.warhammer.gametimer.ApplicationStarter</mainClass>
 						</manifest>
 					</archive>
-					<outputDirectory>${basedir}/target/classes</outputDirectory>
+					<outputDirectory>${basedir}/target</outputDirectory>
 					<includeEmptyDirs>true</includeEmptyDirs>
 					<resources>
 						<resource>
