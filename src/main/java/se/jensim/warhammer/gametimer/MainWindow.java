@@ -38,6 +38,7 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 	private final JMenuItem[] menuFonts;
 
 	private int page = -1;
+	private AudioPlayer audioPlayer = new AudioPlayer();
 
 	final ArrayList<ContainerPanel> panelList = new ArrayList<ContainerPanel>();
 
@@ -150,7 +151,7 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 			ContainerPanel pnl = panelList.get(page);
 
 			if (page == 0 && from == -1) {
-				// DO NOTHING
+				audioPlayer.playSound("PrepareForBattle.wav");
 			} else {
 				long timeRemainingTotal = panelList.get(from).getTotal();
 				panelList.get(page).setTotal(timeRemainingTotal);
@@ -175,6 +176,8 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 
 				StatisticsPanel stats = (StatisticsPanel) panelList.get(page);
 				stats.setContent(statsArray);
+				
+				audioPlayer.playSound("GameOver.wav");
 			}
 
 			mainPanel.removeAll();

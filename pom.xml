@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>se.jensim.warhammer</groupId>
 	<artifactId>gametimer</artifactId>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.0.6-SNAPSHOT</version>
 	<name>GameTimer</name>
 
 	<dependencies>
@@ -14,8 +14,6 @@
 		</dependency>
 
 	</dependencies>
-
-
 
 	<build>
 		<plugins>
@@ -42,7 +40,7 @@
 					</resources>
 				</configuration>
 			</plugin>
-
+<!-- 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -62,6 +60,7 @@
 					</resources>
 				</configuration>
 			</plugin>
+-->
 		</plugins>
 	</build>
 

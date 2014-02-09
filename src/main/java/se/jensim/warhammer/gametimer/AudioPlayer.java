@@ -2,6 +2,8 @@ package se.jensim.warhammer.gametimer;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -12,7 +14,7 @@ import javax.sound.sampled.SourceDataLine;
 
 public class AudioPlayer {
     private final int BUFFER_SIZE = 128000;
-    private File soundFile;
+    private InputStream soundFile;
     private AudioInputStream audioStream;
     private AudioFormat audioFormat;
     private SourceDataLine sourceLine;
@@ -22,10 +24,8 @@ public class AudioPlayer {
      */
     public void playSound(String filename){
 
-        String strFilename = filename;
-
         try {
-            soundFile = new File(strFilename);
+        	soundFile = ClassLoader.getSystemResourceAsStream(filename);
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
