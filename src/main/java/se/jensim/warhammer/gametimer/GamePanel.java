@@ -34,9 +34,10 @@ public class GamePanel extends ContainerPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		long timeTmpRemain = (timeRemain - System.currentTimeMillis() + timeLastmeasure);
+		long timeTmpTotal = (timeRemainTotal - System.currentTimeMillis() + timeLastmeasure);
 
 		lblTime.setText("Remaining: " + HelperTool.millsToTimeString(timeTmpRemain));
-		lblTimeTotal.setText("Total remaining: " + HelperTool.millsToTimeString(timeTmpRemain));
+		lblTimeTotal.setText("Total remaining: " + HelperTool.millsToTimeString(timeTmpTotal));
 	}
 
 	public final void start() {
@@ -59,12 +60,12 @@ public class GamePanel extends ContainerPanel implements ActionListener {
 		} else {
 			start();
 		}
-		
 	}
 
 	private final void recordTimeSpan() {
 		long timeSpan = System.currentTimeMillis() - timeLastmeasure;
 		timeRemain -= timeSpan;
+		timeRemainTotal -=timeSpan;
 		timeLastmeasure = System.currentTimeMillis();
 	}
 }
