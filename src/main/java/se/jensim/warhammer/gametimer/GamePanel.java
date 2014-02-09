@@ -33,6 +33,7 @@ public class GamePanel extends ContainerPanel implements ActionListener {
 		super(CAPTION);
 		lblCaption.setText(CAPTION);
 		timeRemain = TIME;
+		timeStart = TIME;
 
 		// TODO: DEBUG PRINT
 		// System.out.println(String.format("GamePanel '%s' long parameter:%d, timeRemain:%d", CAPTION, TIME,

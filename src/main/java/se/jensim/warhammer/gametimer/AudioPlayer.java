@@ -1,5 +1,6 @@
 package se.jensim.warhammer.gametimer;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,17 +26,15 @@ public class AudioPlayer {
     public void playSound(String filename){
 
         try {
-        	soundFile = ClassLoader.getSystemResourceAsStream(filename);
+        	soundFile = new BufferedInputStream(ClassLoader.getSystemResourceAsStream(filename));
         } catch (Exception e) {
             e.printStackTrace();
-            System.exit(1);
         }
 
         try {
             audioStream = AudioSystem.getAudioInputStream(soundFile);
         } catch (Exception e){
             e.printStackTrace();
-            System.exit(1);
         }
 
         audioFormat = audioStream.getFormat();
@@ -46,10 +45,8 @@ public class AudioPlayer {
             sourceLine.open(audioFormat);
         } catch (LineUnavailableException e) {
             e.printStackTrace();
-            System.exit(1);
         } catch (Exception e) {
             e.printStackTrace();
-            System.exit(1);
         }
 
         sourceLine.start();

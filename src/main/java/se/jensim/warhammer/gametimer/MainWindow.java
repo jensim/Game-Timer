@@ -99,7 +99,7 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 			int round_length = (timeTotal - timePresent - timeDeploy) / (rounds * players);
 			for (int round = 1; round <= DEFAULT_ROUNDS; ++round) {
 				for (int player = 1; player <= DEFAULT_PLAYERS; ++player) {
-					panelList.add(new GamePanel("P:" + player + " R:" + round, round_length));
+					panelList.add(new GamePanel("Player:" + player + " Round:" + round, round_length));
 				}
 			}
 			panelList.add(new StatisticsPanel("Time remaining of each turn.", 0));
@@ -168,7 +168,7 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 					ContainerPanel pan = itr.next();
 					if (pan instanceof GamePanel) { // NOT the last page..
 						GamePanel gamePan = (GamePanel) pan;
-						statsList.add(gamePan.caption + " - " + HelperTool.millsToTimeString(gamePan.timeRemain));
+						statsList.add(gamePan.caption + "   " + HelperTool.millsToTimeString2(gamePan.getPlayedTime()));
 					}
 				}
 				String[] statsArray = new String[statsList.size()];

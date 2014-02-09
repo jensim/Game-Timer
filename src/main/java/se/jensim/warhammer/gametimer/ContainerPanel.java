@@ -13,8 +13,9 @@ public abstract class ContainerPanel extends JPanel {
 			TIME_H = 60 * TIME_M;
 
 	protected long
-			timeRemain,
-			timeRemainTotal,
+			timeStart = 0,
+			timeRemain = 0,
+			timeRemainTotal = 0,
 			timeLastmeasure = System.currentTimeMillis();
 
 	protected static final Font[] fonts = new Font[]{
@@ -50,6 +51,10 @@ public abstract class ContainerPanel extends JPanel {
 
 	public long getTotal() {
 		return timeRemainTotal;
+	}
+	
+	public long getPlayedTime(){
+		return timeStart - timeRemain;
 	}
 
 	public abstract void start();
