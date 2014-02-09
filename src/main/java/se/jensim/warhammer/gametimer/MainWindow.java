@@ -11,12 +11,15 @@ import java.util.Iterator;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 public class MainWindow extends JFrame implements ActionListener, WindowListener {
 	private static final long serialVersionUID = -5821143729479243771L;
 
-	private static final int DEFAULT_ROUNDS = 6, DEFAULT_PLAYERS = 2;
+	public static final int DEFAULT_ROUNDS = 6, DEFAULT_PLAYERS = 2;
 
 	private final SettingsPanel settingsPanel = new SettingsPanel();
 
@@ -29,6 +32,10 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 
 	private final JPanel buttonPanel = new JPanel();
 	private final JPanel mainPanel = new JPanel();
+
+	private final JMenuBar menuBar = new JMenuBar();
+	private final JMenu menuFont = new JMenu("Font");
+	private final JMenuItem[] menuFonts;
 
 	private int page = -1;
 
@@ -58,8 +65,18 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 		add(buttonPanel, BorderLayout.SOUTH);
 
 		stop();
-		
+
 		addWindowListener(this);
+
+		menuFonts = new JMenuItem[ContainerPanel.fonts.length];
+		for (int i = 0; i < menuFonts.length; ++i) {
+			menuFonts[i] = new JMenuItem("Font " + (i + 1));
+			menuFont.add(menuFonts[i]);
+			menuFonts[i].addActionListener(this);
+		}
+		menuBar.add(menuFont);
+
+		setJMenuBar(menuBar);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -100,13 +117,26 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 			} else {
 				System.out.println("WARNING: NOT SUPPOSE TO BE ABLE TO...((Pause button, page " + page + ")).");
 			}
+		} else if (e.getSource() instanceof JMenuItem) {
+			for (JMenuItem item : menuFonts) {
+				if (e.getSource() == item) {
+					String[] header = item.getText().split("Font ");
+					Integer index = Integer.parseInt(header[1]) - 1;
+					for (ContainerPanel pnl : panelList) {
+						if (pnl instanceof GamePanel) {
+							GamePanel gPnl = (GamePanel) pnl;
+							gPnl.setFont(index);
+						}
+					}
+					break;
+				}
+			}
 		}
 	}
-
 	private void setupPage(final int from) {
 
-		//DEBUG
-		//System.out.println(String.format("#setupPage() page:%d from:%d", page, from));
+		// DEBUG
+		// System.out.println(String.format("#setupPage() page:%d from:%d", page, from));
 
 		if (page == -1) { // Settings page (FIRST)
 			mainPanel.removeAll();

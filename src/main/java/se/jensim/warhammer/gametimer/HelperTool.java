@@ -12,7 +12,9 @@ public class HelperTool {
 		long timeM = tmp_remain / TIME_M;
 		tmp_remain -= timeM * TIME_M;
 		long timeS = tmp_remain / 1000;
+		tmp_remain -= timeS*1000;
 		
-		return String.format("%02d:%02d:%02d", timeH, timeM, timeS);
+		
+		return String.format("%02d:%02d:%02d:%03d", timeH, timeM, timeS, tmp_remain);
 	}
 }
