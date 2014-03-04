@@ -34,19 +34,22 @@ public class HelperTool {
 		long timeS = mills % TIME_M;
 		timeS /= 1000;
 		
-		/*
+		
 		StringBuilder sb = new StringBuilder();
 		if(mills < 0){
 			sb.append("- ");
 		}
-		if (Math.abs(mills) > timeH) {
+		if (Math.abs(timeH) > 0) {
 			sb.append(Math.abs(timeH)).append("h ");
 		}
-		if (Math.abs(mills) > timeM) {
+		if (Math.abs(timeM) > 0) {
 			sb.append(Math.abs(timeM)).append("m ");
 		}
-		sb.append(Math.abs(timeS)).append("s");
-		*/
-		return String.format("%02dh %02dm %02ds", timeH, timeM, timeS); 
+		if (Math.abs(timeS) > 0) {
+			sb.append(Math.abs(timeS)).append("s");
+		}
+		
+		return sb.toString();
+		//return String.format("%02dh %02dm %02ds", timeH, timeM, timeS); 
 	}
 }

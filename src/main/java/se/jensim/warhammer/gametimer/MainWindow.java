@@ -44,7 +44,7 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 
 	public MainWindow() {
 
-		setTitle("Game timer");
+		setTitle("Game timer - by Jens - but please blame Daniel");
 		setSize(450, 300);
 		setLocationRelativeTo(null);
 		setVisible(true);
@@ -87,22 +87,30 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 			int timeTotal = settingsPanel.getTotalTime();
 			int timePresent = settingsPanel.getPresentationTime();
 			int timeDeploy = settingsPanel.getDeploymentTime();
-			int rounds = DEFAULT_ROUNDS;
-			int players = DEFAULT_PLAYERS;
+			int round_length = settingsPanel.getRoundTime(DEFAULT_PLAYERS, DEFAULT_ROUNDS);
 
-			GamePanel presentation = new GamePanel("Presentation", timePresent);
-			presentation.setTotal(timeTotal);
-			panelList.add(presentation);
+			if (round_length < 0) {
+				return;
+			}
+			if (timePresent > 0) {
+				GamePanel presentation = new GamePanel("Presentation", timePresent, this);
+				presentation.setTotal(timeTotal);
+				panelList.add(presentation);
+			}
+			if (timeDeploy > 0) {
+				GamePanel deploy = new GamePanel("Deployment", timeDeploy, this);
+				panelList.add(deploy);
+				deploy.setTotal(timeTotal);
+			}
 
-			panelList.add(new GamePanel("Deployment", timeDeploy));
-
-			int round_length = (timeTotal - timePresent - timeDeploy) / (rounds * players);
 			for (int round = 1; round <= DEFAULT_ROUNDS; ++round) {
 				for (int player = 1; player <= DEFAULT_PLAYERS; ++player) {
-					panelList.add(new GamePanel("Player:" + player + " Round:" + round, round_length));
+					GamePanel gp = new GamePanel("Player:" + player + " Round:" + round, round_length, this);
+					panelList.add(gp);
+					gp.setTotal(timeTotal);
 				}
 			}
-			panelList.add(new StatisticsPanel("Time remaining of each turn.", 0));
+			panelList.add(new StatisticsPanel("Time remaining of each turn.", 0, this));
 
 			page = 0;
 			setupPage(-1);
@@ -132,8 +140,11 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 					break;
 				}
 			}
+		} else if (e.getSource() instanceof ContainerPanel) {
+			setupPage(page++);
 		}
 	}
+
 	private void setupPage(final int from) {
 
 		// DEBUG
@@ -146,6 +157,7 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 
 			if (from >= 0 && from < panelList.size()) {
 				panelList.get(from).stop();
+
 			}
 
 			ContainerPanel pnl = panelList.get(page);
@@ -162,22 +174,38 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 			}
 
 			if (pnl instanceof StatisticsPanel) {
+				int timeTotal = settingsPanel.getTotalTime();
+				int timePresent = settingsPanel.getPresentationTime();
+				int timeDeploy = settingsPanel.getDeploymentTime();
+				int round_length = settingsPanel.getRoundTime(DEFAULT_PLAYERS, DEFAULT_ROUNDS);
 
-				ArrayList<String> statsList = new ArrayList<String>();
-				for (Iterator<ContainerPanel> itr = panelList.iterator(); itr.hasNext();) {
-					ContainerPanel pan = itr.next();
-					if (pan instanceof GamePanel) { // NOT the last page..
-						GamePanel gamePan = (GamePanel) pan;
-						statsList.add(gamePan.caption + "   " + HelperTool.millsToTimeString2(gamePan.getPlayedTime()));
-					}
+				final ArrayList<String> statsList = new ArrayList<String>();
+				if (timeTotal > 0) {
+					statsList.add("Total time: " + HelperTool.millsToTimeString2(timeTotal));
 				}
+				if (timePresent > 0) {
+					statsList.add("Presentation time: " + HelperTool.millsToTimeString2(timePresent));
+				}
+				if (timeDeploy > 0) {
+					statsList.add("Deployment time: " + HelperTool.millsToTimeString2(timeDeploy));
+				}
+				if (round_length > 0) {
+					statsList.add("Round time (each): " + HelperTool.millsToTimeString2(round_length));
+				}
+				statsList.add("Players: " + DEFAULT_PLAYERS);
+				statsList.add("Rounds: " + DEFAULT_ROUNDS);
+
 				String[] statsArray = new String[statsList.size()];
 				statsArray = statsList.toArray(statsArray);
 
 				StatisticsPanel stats = (StatisticsPanel) panelList.get(page);
 				stats.setContent(statsArray);
-				
+
 				audioPlayer.playSound("GameOver.wav");
+			} else {
+				if (from < page && page > 0) {
+					audioPlayer.playSound("fog-horn.wav");
+				}
 			}
 
 			mainPanel.removeAll();
@@ -191,8 +219,8 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 		btnStart.setVisible(page == -1);
 		btnBack.setVisible(page > 0 && page < panelList.size());
 		btnNext.setVisible(page >= 0 && page < panelList.size() - 1);
-		btnPause.setVisible(page >= 0 && page < panelList.size());
-		btnStop.setVisible(page >= 0);
+		btnPause.setVisible(page >= 0 && page < panelList.size() - 1);
+		btnStop.setVisible(page >= 0 && page < panelList.size() - 1);
 
 		buttonPanel.repaint();
 

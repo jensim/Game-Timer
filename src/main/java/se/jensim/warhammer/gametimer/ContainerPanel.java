@@ -1,6 +1,7 @@
 package se.jensim.warhammer.gametimer;
 
 import java.awt.Font;
+import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
@@ -8,6 +9,7 @@ public abstract class ContainerPanel extends JPanel {
 	private static final long serialVersionUID = -7221157797565823435L;
 
 	protected final String caption;
+	protected final ActionListener listener;
 
 	protected static final int TIME_M = 60 * 1000,
 			TIME_H = 60 * TIME_M;
@@ -37,8 +39,9 @@ public abstract class ContainerPanel extends JPanel {
 			new Font("Arial", Font.PLAIN, 102),
 			new Font("Arial", Font.PLAIN, 108)};
 
-	public ContainerPanel(String cap) {
+	public ContainerPanel(String cap, ActionListener listener) {
 		caption = cap;
+		this.listener = listener;
 	}
 
 	public final String getCaption() {

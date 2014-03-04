@@ -29,8 +29,8 @@ public class GamePanel extends ContainerPanel implements ActionListener {
 			lblTime,
 			lblTotal};
 
-	public GamePanel(final String CAPTION, final long TIME) {
-		super(CAPTION);
+	public GamePanel(final String CAPTION, final long TIME, ActionListener actionListener) {
+		super(CAPTION, actionListener);
 		lblCaption.setText(CAPTION);
 		timeRemain = TIME;
 		timeStart = TIME;
@@ -62,6 +62,11 @@ public class GamePanel extends ContainerPanel implements ActionListener {
 
 		lblTime.setText(HelperTool.millsToTimeString(timeTmpRemain));
 		lblTotal.setText(HelperTool.millsToTimeString(timeTmpTotal));
+		
+		if(timeTmpRemain <= 0 && listener != null){
+			ActionEvent event = new ActionEvent(this, -1, caption);
+			listener.actionPerformed(event);
+		}
 	}
 
 	public final void setFont(int font) {

@@ -82,25 +82,34 @@ public class SettingsPanel extends JPanel implements ChangeListener {
 		total += ((Integer) time[2][1].getValue()) * HelperTool.TIME_M;
 		return total;
 	}
+	
+	public final int getRoundTime(int players, int rounds){
+		return (getTotalTime() - getPresentationTime() - getDeploymentTime()) / (rounds * players);
+	}
 
 	public void stateChanged(ChangeEvent e) {
-		int timeM = ((Integer) time[0][1].getValue());
-		int timeH = ((Integer) time[0][0].getValue());
+		final int timeM = ((Integer) time[0][1].getValue());
+		final int timeH = ((Integer) time[0][0].getValue());
+		int timeTot = (timeM + (timeH * 60))*60;
 
 		for (int row = 1; row < time.length; ++row) {
 			JSpinner spinnH = time[row][0];
-			timeH -= ((Integer) spinnH.getValue());
+			timeTot -= ((Integer) spinnH.getValue())*3600;
 
 			JSpinner spinnM = time[row][1];
-			timeM -= ((Integer) spinnM.getValue());
+			timeTot -= ((Integer) spinnM.getValue())*60;
 		}
 
-		int timeTot = timeM + (timeH * 60);
+		
 		int rounds = MainWindow.DEFAULT_PLAYERS * MainWindow.DEFAULT_ROUNDS;
 		timeTot /= rounds;
-		timeH = timeTot / 60;
-		timeM = timeTot % 60;
+		
+		int roundTimeH = timeTot / 3600;
+		timeTot -= roundTimeH * 3600;
+		int roundTimeM = timeTot / 60;
+		timeTot -= roundTimeM * 60;
+		int roundTimeS = timeTot;
 
-		lblRoundTime.setText(timeH + "h " + timeM + "m");
+		lblRoundTime.setText(roundTimeH + "h " + roundTimeM + "m " + roundTimeS + "s");
 	}
 }
