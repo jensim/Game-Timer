@@ -20,24 +20,7 @@ public abstract class ContainerPanel extends JPanel {
 			timeRemainTotal = 0,
 			timeLastmeasure = System.currentTimeMillis();
 
-	protected static final Font[] fonts = new Font[]{
-			new Font("Arial", Font.PLAIN, 14),
-			new Font("Arial", Font.PLAIN, 18),
-			new Font("Arial", Font.PLAIN, 24),
-			new Font("Arial", Font.PLAIN, 30),
-			new Font("Arial", Font.PLAIN, 36),
-			new Font("Arial", Font.PLAIN, 42),
-			new Font("Arial", Font.PLAIN, 48),
-			new Font("Arial", Font.PLAIN, 54),
-			new Font("Arial", Font.PLAIN, 60),
-			new Font("Arial", Font.PLAIN, 66),
-			new Font("Arial", Font.PLAIN, 72),
-			new Font("Arial", Font.PLAIN, 78),
-			new Font("Arial", Font.PLAIN, 84),
-			new Font("Arial", Font.PLAIN, 90),
-			new Font("Arial", Font.PLAIN, 96),
-			new Font("Arial", Font.PLAIN, 102),
-			new Font("Arial", Font.PLAIN, 108)};
+	protected static final Font DEFAULT_FONT = new Font("Arial", Font.PLAIN, 14);
 
 	public ContainerPanel(String cap, ActionListener listener) {
 		caption = cap;
@@ -60,6 +43,7 @@ public abstract class ContainerPanel extends JPanel {
 		return timeStart - timeRemain;
 	}
 
+	public abstract void setMyFonts(Font font);
 	public abstract void start();
 	public abstract void stop();
 	public abstract void toggleRunning();

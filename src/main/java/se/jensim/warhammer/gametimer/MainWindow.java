@@ -1,12 +1,12 @@
 package se.jensim.warhammer.gametimer;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -34,13 +34,17 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 	private final JPanel mainPanel = new JPanel();
 
 	private final JMenuBar menuBar = new JMenuBar();
-	private final JMenu menuFont = new JMenu("Font");
-	private final JMenuItem[] menuFonts;
+	private final JMenu menuArkiv = new JMenu("Archive");
+	private final JMenuItem menuFont = new JMenuItem("Set Font");
+
+	// private final JMenuItem[] menuFonts;
 
 	private int page = -1;
 	private AudioPlayer audioPlayer = new AudioPlayer();
 
-	final ArrayList<ContainerPanel> panelList = new ArrayList<ContainerPanel>();
+	private Font fontSetting = new Font("Calibri", Font.PLAIN, 14);
+
+	private final ArrayList<ContainerPanel> panelList = new ArrayList<ContainerPanel>();
 
 	public MainWindow() {
 
@@ -69,13 +73,9 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 
 		addWindowListener(this);
 
-		menuFonts = new JMenuItem[ContainerPanel.fonts.length];
-		for (int i = 0; i < menuFonts.length; ++i) {
-			menuFonts[i] = new JMenuItem("Font " + (i + 1));
-			menuFont.add(menuFonts[i]);
-			menuFonts[i].addActionListener(this);
-		}
-		menuBar.add(menuFont);
+		menuBar.add(menuArkiv);
+		menuArkiv.add(menuFont);
+		menuFont.addActionListener(this);
 
 		setJMenuBar(menuBar);
 	}
@@ -93,19 +93,20 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 				return;
 			}
 			if (timePresent > 0) {
-				GamePanel presentation = new GamePanel("Presentation", timePresent, this);
+				GamePanel presentation = new GamePanel("Presentation", timePresent, this, fontSetting);
 				presentation.setTotal(timeTotal);
 				panelList.add(presentation);
 			}
 			if (timeDeploy > 0) {
-				GamePanel deploy = new GamePanel("Deployment", timeDeploy, this);
+				GamePanel deploy = new GamePanel("Deployment", timeDeploy, this, fontSetting);
 				panelList.add(deploy);
 				deploy.setTotal(timeTotal);
 			}
 
 			for (int round = 1; round <= DEFAULT_ROUNDS; ++round) {
 				for (int player = 1; player <= DEFAULT_PLAYERS; ++player) {
-					GamePanel gp = new GamePanel("Player:" + player + " Round:" + round, round_length, this);
+					GamePanel gp =
+							new GamePanel("Player:" + player + " Round:" + round, round_length, this, fontSetting);
 					panelList.add(gp);
 					gp.setTotal(timeTotal);
 				}
@@ -126,20 +127,11 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 			} else {
 				System.out.println("WARNING: NOT SUPPOSE TO BE ABLE TO...((Pause button, page " + page + ")).");
 			}
-		} else if (e.getSource() instanceof JMenuItem) {
-			for (JMenuItem item : menuFonts) {
-				if (e.getSource() == item) {
-					String[] header = item.getText().split("Font ");
-					Integer index = Integer.parseInt(header[1]) - 1;
-					for (ContainerPanel pnl : panelList) {
-						if (pnl instanceof GamePanel) {
-							GamePanel gPnl = (GamePanel) pnl;
-							gPnl.setFont(index);
-						}
-					}
-					break;
-				}
-			}
+		} else if (e.getSource() == menuFont) {
+			FontChooser fs = new FontChooser(this, fontSetting);
+			fs.addWindowListener(this);
+			fs.showMe();
+
 		} else if (e.getSource() instanceof ContainerPanel) {
 			setupPage(page++);
 		}
@@ -220,7 +212,7 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 		btnBack.setVisible(page > 0 && page < panelList.size());
 		btnNext.setVisible(page >= 0 && page < panelList.size() - 1);
 		btnPause.setVisible(page >= 0 && page < panelList.size() - 1);
-		btnStop.setVisible(page >= 0 && page < panelList.size() - 1);
+		btnStop.setVisible(page >= 0 && page < panelList.size());
 
 		buttonPanel.repaint();
 
@@ -240,8 +232,20 @@ public class MainWindow extends JFrame implements ActionListener, WindowListener
 	}
 
 	public void windowClosing(WindowEvent e) {
-		System.out.println("Window closing");
-		System.exit(0);
+		if (e.getSource() instanceof FontChooser) {
+			FontChooser fs = (FontChooser) e.getSource();
+
+			Font f = fs.getFont();
+			if (f != null) {
+				fontSetting = f;
+				for (ContainerPanel pnl : panelList) {
+					pnl.setMyFonts(fontSetting);
+				}
+			}
+		} else {
+			System.out.println("Window closing");
+			System.exit(0);
+		}
 	}
 
 	public void windowClosed(WindowEvent e) {

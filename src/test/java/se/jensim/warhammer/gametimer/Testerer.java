@@ -30,7 +30,7 @@ public class Testerer {
 	@Test
 	public void test() {
 		int testTime = 3000;
-		GamePanel gp = new GamePanel("", 2 * testTime, null);
+		GamePanel gp = new GamePanel("", 2 * testTime, null, null);
 		
 		gp.start();
 		try {

@@ -1,5 +1,6 @@
 package se.jensim.warhammer.gametimer;
 
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +30,8 @@ public class GamePanel extends ContainerPanel implements ActionListener {
 			lblTime,
 			lblTotal};
 
-	public GamePanel(final String CAPTION, final long TIME, ActionListener actionListener) {
+	public GamePanel(final String CAPTION, final long TIME, 
+			ActionListener actionListener, Font font) {
 		super(CAPTION, actionListener);
 		lblCaption.setText(CAPTION);
 		timeRemain = TIME;
@@ -43,7 +45,7 @@ public class GamePanel extends ContainerPanel implements ActionListener {
 		JPanel grid = new JPanel(new GridLayout(2, 2));
 
 		for (JLabel lbl : labels) {
-			lbl.setFont(fonts[0]);
+			lbl.setFont(DEFAULT_FONT);
 		}
 
 		add(lblCaption);
@@ -54,6 +56,8 @@ public class GamePanel extends ContainerPanel implements ActionListener {
 
 		grid.add(lblCapTotal);
 		grid.add(lblTotal);
+		
+		setMyFonts(font);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -62,20 +66,19 @@ public class GamePanel extends ContainerPanel implements ActionListener {
 
 		lblTime.setText(HelperTool.millsToTimeString(timeTmpRemain));
 		lblTotal.setText(HelperTool.millsToTimeString(timeTmpTotal));
-		
-		if(timeTmpRemain <= 0 && listener != null){
+
+		if (timeTmpRemain <= 0 && listener != null) {
 			ActionEvent event = new ActionEvent(this, -1, caption);
 			listener.actionPerformed(event);
 		}
 	}
 
-	public final void setFont(int font) {
-		if (font >= fonts.length || font < 0) {
-			//WARNING
-		} else {
-			for (JLabel lbl : labels) {
-				lbl.setFont(fonts[font]);
-			}
+	public final void setMyFonts(Font font) {
+		if(font == null){
+			font = DEFAULT_FONT;
+		}
+		for (JLabel lbl : labels) {
+			lbl.setFont(font);
 		}
 	}
 
